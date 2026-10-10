@@ -1,91 +1,89 @@
-# OG Cover — 动态社交分享封面图生成器
+# OG Cover — Dynamic Social Share Cover Image Generator
 
-访问一个 URL，就返回一张 1200×630（默认 2x 渲染为 2400×1260）的 PNG 封面图，
-可直接用作网站的 Open Graph / Twitter Card 分享图。
+[中文文档](README-zh.md)
 
-```
-https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides
-```
+Hit a URL, get a 1200×630 PNG cover (2x rendered as 2400×1260 by default),
+ready to use as Open Graph / Twitter Card social images.
 
-| 浅色（默认） | 深色 |
+| Light (default) | Dark |
 |---|---|
-| ![浅色示例](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides) | ![深色示例](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides&theme=dark) |
+| ![light example](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides) | ![dark example](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides&theme=dark) |
 
-## 特性
+## Features
 
-- ⚡ **Vercel Edge Runtime**：全球边缘节点，毫秒级响应，无需服务器
-- 🀄 **中英双语**：英文标题走高速路径；中文标题自动加载思源黑体（woff 子集，内存缓存）
-- 🔍 **2x 高清渲染**：默认输出 2400×1260，社交平台缩略显示时文字更锐利
-- 🎨 **深浅两套主题**：`theme=dark` / `theme=light`（默认 light）
-- 🆓 **零成本**：Vercel Hobby 免费额度完全够个人博客用
+- ⚡ **Vercel Edge Runtime**: millisecond responses from edge nodes worldwide, no server needed
+- 🀄 **Bilingual**: English titles take the fast path; Chinese titles auto-load Noto Sans SC (woff subset, cached in memory)
+- 🔍 **2x HD rendering**: outputs 2400×1260 by default, sharper text when downscaled by social platforms
+- 🎨 **Two themes**: `theme=dark` / `theme=light` (default light)
+- 🆓 **Zero cost**: fits comfortably in the Vercel Hobby free tier for personal blogs
 
-## 快速部署你自己的实例
+## Deploy your own instance
 
-### 方式一：一键 Fork 部署（推荐）
+### Option 1: One-click fork deploy (recommended)
 
-1. Fork 本仓库
-2. 打开 [Vercel](https://vercel.com/new)，Import 你 Fork 的仓库
-3. 一路默认点下去，部署完成
-4. （可选）把项目域名换成你喜欢的短域名：Vercel Dashboard → 项目 → Settings → Domains
+1. Fork this repo
+2. Open [Vercel](https://vercel.com/new) and import your fork
+3. Keep the defaults and deploy
+4. (Optional) Set a nicer short domain: Vercel Dashboard → project → Settings → Domains
 
-全程不需要填任何环境变量、API Key。
+No environment variables or API keys needed.
 
-### 方式二：手动部署
+### Option 2: Manual deploy
 
 ```bash
-git clone https://github.com/<你的用户名>/og-cover.git
+git clone https://github.com/<your-username>/og-cover.git
 cd og-cover
-npm install -g vercel   # 如果还没装 Vercel CLI
-vercel                  # 按提示登录并部署
+npm install -g vercel   # if you don't have the Vercel CLI yet
+vercel                  # follow the prompts to log in and deploy
 ```
 
-### 关闭访问保护（重要）
+### Disable Deployment Protection (important)
 
-Vercel 新项目默认开启 Deployment Protection，图片 URL 会被 SSO 登录墙挡住，
-导致社交平台爬虫抓不到图。关闭方法：
+New Vercel projects enable Deployment Protection by default, which puts image URLs
+behind an SSO login wall so social crawlers can't fetch them. Turn it off:
 
-项目 → **Settings** → **Deployment Protection** → 设为 **Off**（或仅对 Preview 生效）
+Project → **Settings** → **Deployment Protection** → set to **Off** (or preview-only)
 
-## API 参数
+## API parameters
 
-| 参数    | 说明                          | 默认值                      |
-|---------|-------------------------------|-----------------------------|
-| `title` | 主标题（≤90 字，中英都行）     | `Untitled`                  |
-| `tag`   | 顶部小标签（自动大写）          | `tortrixx.github.io/slides` |
-| `theme` | `light` / `dark`              | `light`                     |
-| `scale` | 渲染倍数 1–3，越大越清晰文件也越大 | `2`                      |
+| Param   | Description                              | Default                     |
+|---------|------------------------------------------|-----------------------------|
+| `title` | Main title (≤90 chars, EN/CN supported)  | `Untitled`                  |
+| `tag`   | Small tag on top (auto-uppercased)       | `tortrixx.github.io/slides` |
+| `theme` | `light` / `dark`                         | `light`                     |
+| `scale` | Render scale 1–3, higher = sharper but larger file | `2`                  |
 
-示例：
+Examples:
 
 ```text
-# 英文标题 + 深色主题
+# English title + dark theme
 /api/og?title=Intelligent%20Agents&tag=slides&theme=dark
 
-# 中文标题（自动加载思源黑体）
+# Chinese title (auto-loads Noto Sans SC)
 /api/og?title=智能代理入门&tag=演讲文稿
 
-# 1x 标准分辨率（文件最小）
+# 1x standard resolution (smallest file)
 /api/og?title=Hello&scale=1
 ```
 
-## 在你的网站里用
+## Use it on your site
 
-给每个页面加 meta 标签（`title` 换成各自标题，URL 记得 encode）：
+Add meta tags to each page (replace `title`, URL-encode it):
 
 ```html
-<meta property="og:image" content="https://你的域名/api/og?title=Intelligent%20Agents&tag=slides" />
+<meta property="og:image" content="https://your-domain/api/og?title=Intelligent%20Agents&tag=slides" />
 <meta name="twitter:card" content="summary_large_image" />
 ```
 
-之后把链接发到 Twitter / Telegram / Discord / Slack，就会自动带上这张预览图。
+Share the link on Twitter / Telegram / Discord / Slack and the preview card shows up.
 
-调试分享效果：
-- Twitter：https://cards-dev.twitter.com/validator
-- Facebook：https://developers.facebook.com/tools/debug/
+Validators:
+- Twitter: https://cards-dev.twitter.com/validator
+- Facebook: https://developers.facebook.com/tools/debug/
 
-## 自定义样式
+## Customize the style
 
-改 `api/og.js` 里的 `THEMES` 对象即可换配色，布局是普通的 React  style 对象：
+Edit the `THEMES` object in `api/og.js` — the layout is plain React style objects:
 
 ```js
 const THEMES = {
@@ -94,33 +92,34 @@ const THEMES = {
 };
 ```
 
-想加新主题：在 `THEMES` 里加一项，前端用 `?theme=名字` 调用。
+Add a new entry to `THEMES` and call it with `?theme=name`.
 
-## 本地开发
+## Local development
 
 ```bash
 npm install
 npx vercel dev
-# 打开 http://localhost:3000/api/og?title=Hello
+# open http://localhost:3000/api/og?title=Hello
 ```
 
-## 踩坑记录
+## Gotchas
 
-1. **`api/*.jsx` 在无框架 Vercel 项目里不会被识别为函数路由**
-   （构建成功但访问 404）。必须用 `.js` + `React.createElement` 手写，
-   或者上 Next.js 框架。
-2. **satori 对 fontsource 的 woff2 子集字体渲染空白**
-   （200 返回但 0 字节）。换 woff 版就正常：
+1. **`api/*.jsx` is not recognized as a function route in framework-less Vercel projects**
+   (build succeeds but returns 404). Use `.js` + `React.createElement`,
+   or switch to the Next.js framework.
+2. **Satori renders blank with fontsource's woff2 subset fonts**
+   (HTTP 200 with 0 bytes). Use the woff version instead:
    `.../files/noto-sans-sc-chinese-simplified-700-normal.woff`
-3. **中文标题记得配字体**：Edge Runtime 没有系统级的中文 fallback 字体，
-   不加载字体中文会显示为方框。本项目用正则检测 CJK 字符后才懒加载字体，
-   英文标题不受影响。
+3. **No system CJK fallback fonts in Edge Runtime**:
+   Chinese renders as tofu boxes without a loaded font. This project
+   lazy-loads the font only when CJK characters are detected, so English
+   titles stay on the fast path.
 
-## 技术栈
+## Tech stack
 
-- [@vercel/og](https://www.npmjs.com/package/@vercel/og) — OG 图片生成
-- [satori](https://github.com/vercel/satori) — HTML/CSS 转 SVG 引擎
-- Vercel Edge Runtime — 部署运行
+- [@vercel/og](https://www.npmjs.com/package/@vercel/og) — OG image generation
+- [satori](https://github.com/vercel/satori) — HTML/CSS to SVG engine
+- Vercel Edge Runtime — hosting
 
 ## License
 
