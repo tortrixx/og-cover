@@ -7,7 +7,9 @@
 https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides
 ```
 
-![示例](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides)
+| 浅色（默认） | 深色 |
+|---|---|
+| ![浅色示例](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides) | ![深色示例](https://og-cover-phi.vercel.app/api/og?title=Intelligent%20Agents&tag=slides&theme=dark) |
 
 ## 特性
 
